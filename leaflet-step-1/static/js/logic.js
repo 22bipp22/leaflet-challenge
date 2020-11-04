@@ -39,7 +39,7 @@ d3.json(queryUrl, function(response) {
         
         
     }
-    
+
     let legend = L.control({position: 'bottomright'});
 
     legend.onAdd = function (map) {
@@ -68,24 +68,5 @@ d3.json(queryUrl, function(response) {
                d > 10 ? 'yellow' :
                         'greenyellow';
     }
-    // let color = "";
-    // if (location.coordinates[2] > 89) {
-    //     color = "red";
-    // }
-    // else if (location.coordinates[2] > 69) {
-    //     color = 'orangered';
-    // }
-    // else if (location.coordinates[2] > 49) {
-    //     color = "orange";
-    // }
-    // else if (location.coordinates[2] > 29) {
-    //     color = "gold";
-    // }
-    // else if (location.coordinates[2] > 9) {
-    //     color = "yellow";
-    // }
-    // else {
-    //     color = "greenyellow";
-    // }
    
 });
