@@ -27,38 +27,65 @@ d3.json(queryUrl, function(response) {
         let location = features[i].geometry;
         let properties = features[i].properties;
         
-    
-        let color = "";
-        if (location.coordinates[2] > 89) {
-            color = "#802200";
-        }
-        else if (location.coordinates[2] > 69) {
-            color = '#805100';
-        }
-        else if (location.coordinates[2] > 49) {
-            color = "#806d00";
-        }
-        else if (location.coordinates[2] > 29) {
-            color = "#807500";
-        }
-        else if (location.coordinates[2] > 9) {
-            color = "#7e8000";
-        }
-        else {
-            color = "#6f8000";
-        }
         
-
         L.circle([location.coordinates[1], location.coordinates[0]], {
             fillOpacity: 0.95,
             color: "black",
-            fillColor: color,
+            weight: 1,
+            fillColor: getColor(location.coordinates[2]),
             // adjust radius
             radius: properties.mag * 20000
-            }).bindPopup("<h2>" + properties.place + "</h2> <hr> <h3> " + "Magnitude: " + properties.mag + "</h3> <hr> <h3> Depth: " + location.coordinates[2] + "</h3>").addTo(myMap);
-            
+            }).bindPopup("<h2>" + properties.place + "</h2> <hr> <h3> " + "Magnitude: " + properties.mag + "</h3> <hr> <h3> Depth: " + location.coordinates[2] + "</h3>").addTo(myMap);   
+        
         
     }
+    
+    let legend = L.control({position: 'bottomright'});
 
+    legend.onAdd = function (map) {
+        
+            var div = L.DomUtil.create('div', 'info legend'),
+                depth = [-10, 10, 30, 50, 70, 90],
+                labels = [];
+        
+            // loop through our density intervals and generate a label with a colored square for each interval
+            for (let i = 0; i < depth.length; i++) {
+                div.innerHTML +=
+                    '<i style="background:' + getColor(depth[i] + 1) + '"></i> ' +
+                    depth[i] + (depth[i + 1] ? '&ndash;' + depth[i + 1] + '<br>' : '+');
+            }
+        
+            return div;
+        };
+        
+    legend.addTo(myMap);    
+
+    function getColor(d) {
+        return d > 90 ? 'red' :
+               d > 70 ? 'orangered' :
+               d > 50 ? 'orange' :
+               d > 30 ? 'gold' :
+               d > 10 ? 'yellow' :
+                        'greenyellow';
+    }
+    // let color = "";
+    // if (location.coordinates[2] > 89) {
+    //     color = "red";
+    // }
+    // else if (location.coordinates[2] > 69) {
+    //     color = 'orangered';
+    // }
+    // else if (location.coordinates[2] > 49) {
+    //     color = "orange";
+    // }
+    // else if (location.coordinates[2] > 29) {
+    //     color = "gold";
+    // }
+    // else if (location.coordinates[2] > 9) {
+    //     color = "yellow";
+    // }
+    // else {
+    //     color = "greenyellow";
+    // }
    
 });
