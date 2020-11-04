@@ -29,20 +29,23 @@ d3.json(queryUrl, function(response) {
         
     
         let color = "";
-        if (location.coordinates[2] > 100) {
-            color = "red";
+        if (location.coordinates[2] > 89) {
+            color = "#802200";
         }
-        else if (location.coordinates[2] > 50) {
-            color = 'orange';
+        else if (location.coordinates[2] > 69) {
+            color = '#805100';
         }
-        else if (location.coordinates[2] > 20) {
-            color = "yellow";
+        else if (location.coordinates[2] > 49) {
+            color = "#806d00";
         }
-        else if (location.coordinates[2] > 10) {
-            color = "green";
+        else if (location.coordinates[2] > 29) {
+            color = "#807500";
+        }
+        else if (location.coordinates[2] > 9) {
+            color = "#7e8000";
         }
         else {
-            color = "yellowgreen";
+            color = "#6f8000";
         }
         
 
