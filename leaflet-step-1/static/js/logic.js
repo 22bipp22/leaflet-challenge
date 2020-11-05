@@ -1,10 +1,10 @@
-// define our map!!!
+// define the map
 let myMap = L.map("map", {
     center: [37.09, -100.71],
     zoom: 4
 });
 
-// copy pasta of the tile layer
+// tile layer
 L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
     attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
     tileSize: 512,
@@ -14,7 +14,8 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
     accessToken: API_KEY
   }).addTo(myMap);
 
-let queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
+//bring in the webpage
+  let queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
 
 d3.json(queryUrl, function(response) {
@@ -22,12 +23,13 @@ d3.json(queryUrl, function(response) {
     console.log(response.features);
     features = response.features;
     
-    let heatArray = [];
+    //iterate through the returned data
     for (let i = 0; i < features.length; i++) {
         let location = features[i].geometry;
         let properties = features[i].properties;
         
         
+        //Create a circle at each earthquake point
         L.circle([location.coordinates[1], location.coordinates[0]], {
             fillOpacity: 0.95,
             color: "black",
@@ -40,6 +42,7 @@ d3.json(queryUrl, function(response) {
         
     }
 
+    //create the legend at the bottom right of the screen
     let legend = L.control({position: 'bottomright'});
 
     legend.onAdd = function (map) {
@@ -48,7 +51,7 @@ d3.json(queryUrl, function(response) {
                 depth = [-10, 10, 30, 50, 70, 90],
                 labels = [];
         
-            // loop through our density intervals and generate a label with a colored square for each interval
+            // loop through the depth intervals and generate a label with a colored square for each interval
             for (let i = 0; i < depth.length; i++) {
                 div.innerHTML +=
                     '<i style="background:' + getColor(depth[i] + 1) + '"></i> ' +
@@ -60,6 +63,7 @@ d3.json(queryUrl, function(response) {
         
     legend.addTo(myMap);    
 
+    //function to determine the color of the circle
     function getColor(d) {
         return d > 90 ? 'red' :
                d > 70 ? 'orangered' :
